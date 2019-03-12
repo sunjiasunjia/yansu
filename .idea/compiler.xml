@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="elas" />
+        <module name="es" />
+        <module name="mysql" />
+        <module name="nginx-copy1" />
+        <module name="nginx-copy2" />
+        <module name="nginx-session" />
+        <module name="redis-demo" />
+        <module name="springboot-kafka-consumer" />
+        <module name="springboot-kafka-consumertwo" />
+        <module name="springboot-kafka-provider" />
+        <module name="springboot-layui" />
+        <module name="springboot-mongtest" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="fruits-four" target="1.8" />
+      <module name="nginx-session-copy1" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="elas" options="-parameters" />
+      <module name="mysql" options="-parameters" />
+      <module name="nginx-copy1" options="-parameters" />
+      <module name="nginx-copy2" options="-parameters" />
+      <module name="nginx-session" options="-parameters" />
+      <module name="nginx-session-copy1" options="-parameters" />
+      <module name="redis-demo" options="-parameters" />
+      <module name="springboot-kafka-consumer" options="-parameters" />
+      <module name="springboot-kafka-consumertwo" options="-parameters" />
+      <module name="springboot-kafka-provider" options="-parameters" />
+      <module name="springboot-layui" options="-parameters" />
+      <module name="springboot-mongtest" options="-parameters" />
+    </option>
+  </component>
+</project>

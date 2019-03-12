@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>登录页面</title>
+    <script src="../jquery-1.9.1.min.js"></script>
+</head>
+<body>
+
+</body>
+<script>
+    $(function () {
+        $.ajax({
+            url : "../getUserInfo.do",
+            dataType: "json",
+            success : function(data) {
+                if(data.user != null){
+                    document.write(data.user.name +"&nbsp;8082");
+                }else{
+                    alert("请先登录！");
+                    window.location.href="../login.do";
+                }
+            },
+            error : function(e){
+                alert("网络连接失败，请您稍后再试！");
+            }
+        });
+    })
+</script>
+</html>

@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+    <script src="../js/layui/layui.js"></script>
+    <script src="../js/jquery/jquery-1.9.1.js"></script>
+    <link rel="stylesheet" href="../js/layui/css/layui.css">
+</head>
+<body>
+<ul class="layui-nav">
+    <li class="layui-nav-item">
+        <a href="#" onclick="onAddBtn()">新增</a>
+    </li>
+</ul>
+<div id="add-main" style="display: none;">
+    <form class="layui-form" id="add-form" action="">
+        <div class="layui-row layui-col-space10">
+            <div class="layui-col-md2">
+                <label class="layui-form-label" style="width: 100px" >邮箱:</label>
+            </div>
+            <div class="layui-col-md3">
+                <input type="hidden"  id="id" name="id" required value="" style="width: 240px"  placeholder="请输入编号"  class="layui-input">
+                <input type="text" id="email" name="email" required value="" style="width: 240px" lay-verify="required" placeholder="请输入编号" autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-col-md2">
+                <label class="layui-form-label" style="width: 100px">姓名:</label>
+            </div>
+            <div class="layui-col-md3">
+                <input type="text" id="name" name="name" required style="width: 240px" lay-verify="required" placeholder="请输入姓名" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-row layui-col-space5">
+            <div class="layui-col-md2">
+                <label class="layui-form-label" style="width: 100px" >密码:</label>
+            </div>
+            <div class="layui-col-md3">
+                <input type="text" id="pass" name="pass" required value="" style="width: 240px" lay-verify="required" placeholder="请输入昵称" autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-col-md2">
+                <label class="layui-form-label" style="width: 100px">时间:</label>
+            </div>
+            <div class="layui-col-md3">
+                <input type="text" id="time" name="time" required value="" style="width: 240px" lay-verify="required" placeholder="请输入昵称" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-row layui-col-space10">
+            <div class="layui-col-md2" >
+                <label class="layui-form-label" style="width: 100px">地址:</label>
+            </div>
+            <div class="layui-col-md9">
+                <input type="text" id="url" name="url" required value=""  lay-verify="required" placeholder="请输入昵称" autocomplete="off" class="layui-input">
+            </div>
+
+        </div>
+
+        <div class="layui-row layui-col-space10">
+            <div class="layui-col-md3">
+            </div>
+            <div class="layui-col-md4">
+                <button class="layui-btn" lay-submit lay-filter="save" >立即提交</button>
+            </div>
+            <div class="layui-col-md4">
+                <button type="reset" class="layui-btn layui-btn-primary" id="closeBtn" >重置</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+<div id="toolbar" style="display: none;">
+    <a class="layui-btn layui-btn" lay-event="edit"><center>编辑</center></a>
+    <a class="layui-btn layui-btn-danger layui-btn" lay-event="del"><center>删除</center></a>
+</div>
+<table id="table" lay-filter="test" ></table>
+</body>
+<script type="text/javascript"  th:inline="none">
+    /* <![CDATA[ */
+    layui.use(['table','layer','form','element'], function() {
+        var table = layui.table;
+        var element = layui.element;
+        var layer = layui.layer;
+        var form = layui.form;
+
+        $(function () {
+            var tableList = table.render({
+                elem: '#table',
+                fit: true,
+                cellMinWidth: true, //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+                url: '../queryListUser', //数据接口
+                type: "GET",
+                loading: false,
+                page: true,//开启分页
+                limits: [1,5,30,40,50,60,70,80,90],//page 代表当前页码、limit 代表每页数据量
+                cols: [[ //表头
+                    {type: 'checkbox', fixed: 'left',width:150},
+                    {field: 'id', title: '产品ID', sort: true, align: 'center', fixed: 'left',width:100},
+                    {field: 'email', title: '用户名', align: 'center', sort: true,width:150},
+                    {field: 'name', title: '性别', align: 'center', sort: true,width:150},
+                    {field: 'pass', title: '姓名', align: 'center', sort: true,width:150},
+                    {field: 'time', title: '时间', align: 'center', sort: true,width:150},
+                    {field: 'url', title: '路径', align: 'center', sort: true,width:150},
+                    {fixed: 'right',title: '操作', width: 250, align: 'center', toolbar: '#toolbar'},
+                ]]
+            });
+            $('#searchBtn').on('click', function () {
+                url: '../queryLists', //数据接口
+                    tableList.reload('table', {
+                        where: {}
+                    });
+                return false;
+            });
+        })
+
+        // 监听你的表格
+        table.on('tool(test)', function(obj){
+            var data = obj.data;
+            var id = data.id
+            var name = data.name
+            if(obj.event === 'del'){
+                layer.confirm('真的删除行么', function(index){
+                    $.ajax({
+                        url: "../deleteUser",
+                        type: "POST",
+                        data:{"id":data.id},
+                        dataType: "json",
+                        success: function(data){
+                            if(data==null){
+                                layer.msg(data.id);
+                                layer.msg("删除失败", {icon: 5});
+                            }else{
+                                layer.msg(data.id);
+                                //删除这一行
+                                obj.del();
+                                //关闭弹框
+                                layer.close(index);
+                                layer.msg("删除成功", {icon: 6});
+                            }
+                        },
+                        error:function(){
+                            alert(data);
+                        },
+                    });
+                });
+            }else if(obj.event === 'edit'){
+                layer.alert('编辑行：<br>'+ JSON.stringify(data))
+                layer.open({
+                    type: 1,
+                    title:"修改",
+                    closeBtn: false,
+                    shift: 2,
+                    area: ['800px', '500px'],
+                    shadeClose: true,
+                    // btn: ['新增', '取消'],
+                    // btnAlign: 'c',
+                    content: $("#add-main"),
+                    success: function(layero, index){
+                        $('#id').val(data.id);
+                        $('#email').val(data.email);
+                        $('#name').val(data.name);
+                        $('#pass').val(data.pass);
+                        $('#time').val(data.time);
+                        $('#url').val(data.url);
+                    },
+                    yes:function(){
+                    }
+                });
+            }
+        });
+        layui.use(['layer', 'form'], function () {
+            var layer = layui.layer,
+                $ = layui.jquery,
+                form = layui.form;
+
+            //提交监听事件
+            form.on('submit(save)', function (data) {
+                params = data.field;
+                //alert(JSON.stringify(params))
+                submit($,params);
+                return false;
+            })
+            var obj = document.getElementById('closeBtn');
+            obj.addEventListener('click', function cancel(){
+                CloseWin();
+            });
+        })
+        //提交
+        function submit($,params){
+            $.post('../addUser', params, function (data) {
+                if (data == 1) {
+                    CloseWin();
+                }else if(data==2){
+                    // parent.location.href='${ctx}/golbal/main';
+                    layui.alert("失败")
+                    CloseWin();
+                }else{
+                    location.reload(); // 页面刷新
+                    return false
+                }
+            }, 'json');
+        }
+        //关闭页面
+        function CloseWin(){
+            parent.location.reload(); // 父页面刷新
+            var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+            parent.layer.close(index); //再执行关闭
+        }
+    })
+    /* ]]> */
+    function onAddBtn(){
+        //页面层-自定义
+        layer.open({
+            type: 1,
+            title:"新增",
+            closeBtn: false,
+            shift: 2,
+            area: ['800px', '500px'],
+            shadeClose: true,
+            // btn: ['新增', '取消'],
+            // btnAlign: 'c',
+            content: $("#add-main"),
+            success: function(layero, index){},
+            yes:function(){
+            }
+        });
+    }
+</script>
+</html>

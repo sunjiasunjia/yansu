@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>登录页面</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+    <meta name="keywords" content="Flat Dark Web Login Form Responsive Templates, Iphone Widget Template, Smartphone login forms,Login form, Widget Template, Responsive Templates, a Ipad 404 Templates, Flat Responsive Templates" />
+    <script src="../jquery-1.9.1.min.js"></script>
+    <link href="../css/style.css" rel='stylesheet' type='text/css' />
+
+</head>
+<body>
+<script>
+    $(document).ready(function(c) {
+        $('.close').on('click', function(c){
+            $('.login-form').fadeOut('slow', function(c){
+                $('.login-form').remove();
+            });
+        });
+    });
+</script>
+<!--SIGN UP-->
+<div style="margin-top: 5px;">
+    <h1><img src="../images/u1.png" height="100" width="400"/></h1>
+    <div class="login-form">
+        <!--        <div class="close"> </div>-->
+        <div class="head-info">
+            <label class="lbl-1"> </label>
+            <label class="lbl-2"> </label>
+            <label class="lbl-3"> </label>
+        </div>
+        <div class="clear"> </div>
+        <div class="avtar">
+            <img src="../images/avtar.png" />
+        </div>
+        <form >
+            <input type="text" class="text" id="name" value="8080" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Username';}" />
+            <div class="key">
+                <input type="password" id="pass" value="Password" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Password';}"/>
+            </div>
+            <div class="signin">
+                <input type="button" onclick="Userlogin()" value="登录" />
+            </div>
+        </form>
+    </div>
+    <div class="copy-rights">
+        <p>版权 &copy; 2018.1806b班二组保留所有权 <a href="http://www.cssmoban.com/" target="_blank" title="1806b二组">1806b二组</a> - 来自 <a href="http://www.jinkeit.com/" title="金科教育" target="_blank">金科教育</a></p>
+    </div>
+</div>
+<script>
+    function Userlogin() {
+        var name = $('#name').val();
+        var pass = $('#pass').val();
+        $.ajax({
+            url : "../loginByName.do",
+            async : true,
+            type: "POST",
+            data: {'name':name,'pass':pass},
+            dataType: "json",
+            success : function(data) {
+                if(data == 0){
+                    alert("登录成功！");
+                    window.location.href="../index.do"
+                }else{
+                    alert("失败！");
+                }
+            },
+            error : function(e){
+                alert("网络连接失败，请您稍后再试！");
+            }
+        });
+    }
+</script>
+</body>
+</html>
